@@ -110,12 +110,13 @@ public class SXSSFCreateTest {
               XSSFSheet createSheet = xssfWorkbook.getSheetAt(i);
               XSSFCellStyle setWorkBookStyle = xssfWorkbook.createCellStyle();
 
-              Font headerFont = xssfWorkbook.createFont();
+            /*  Font headerFont = xssfWorkbook.createFont();
               headerFont.setBold(true);
               headerFont.setFontHeightInPoints((short) 14);
               headerFont.setColor(IndexedColors.RED.getIndex());
+              headerFont.setFontName("맑은 고딕");
 
-              setWorkBookStyle.setFont(headerFont);
+              setWorkBookStyle.setFont(headerFont);*/
 
 
               /*XSSFCellStyle orgCellStyle = excelsheetreaderhandlerbean.getXssfCellStyleList().get(i);
@@ -132,14 +133,14 @@ public class SXSSFCreateTest {
                       cell.setCellValue(excelSheetCellReaderInfoBean.get(b).getValue());
                       cell.setCellValue(excelSheetCellReaderInfoBean.get(b).getValue());
 
-                     /* XSSFCellStyle xssfCellStyle = excelSheetCellReaderInfoBean.get(b).getCellStyle() == null? null : excelSheetCellReaderInfoBean.get(b).getCellStyle();
+                      XSSFCellStyle xssfCellStyle = excelSheetCellReaderInfoBean.get(b).getCellStyle() == null? null : excelSheetCellReaderInfoBean.get(b).getCellStyle();
                       if(null != xssfCellStyle ) {
                           XSSFCellStyle tempCellStyle = cell.getCellStyle();
                           tempCellStyle.cloneStyleFrom(xssfCellStyle);
                           cell.setCellStyle(tempCellStyle);
-                      }*/
+                      }
 
-                     cell.setCellStyle(setWorkBookStyle);
+                     //cell.setCellStyle(setWorkBookStyle);
 
                       /*XSSFCellStyle xssfCellStyle = excelSheetCellReaderInfoBean.get(b).getCellStyle() == null? null : excelSheetCellReaderInfoBean.get(b).getCellStyle();
                       if(null != xssfCellStyle ) setWorkBookStyle.cloneStyleFrom(xssfCellStyle);  cell.setCellStyle(xssfCellStyle);*/

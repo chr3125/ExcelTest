@@ -1,13 +1,11 @@
 import org.apache.poi.hssf.util.CellReference;
 import org.apache.poi.openxml4j.opc.OPCPackage;
-import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.eventusermodel.ReadOnlySharedStringsTable;
 import org.apache.poi.xssf.eventusermodel.XSSFReader;
 import org.apache.poi.xssf.eventusermodel.XSSFSheetXMLHandler;
 import org.apache.poi.xssf.model.StylesTable;
-import org.apache.poi.xssf.usermodel.XSSFCellStyle;
-import org.apache.poi.xssf.usermodel.XSSFComment;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.poi.xssf.usermodel.*;
 import org.junit.Test;
 import org.springframework.context.annotation.Bean;
 import org.xml.sax.ContentHandler;
@@ -36,7 +34,7 @@ public class XSSFReaderTest {
         ExcelSheetReaderHandlerBean excelSheetReaderHandlerBean = new ExcelSheetReaderHandlerBean();
 
 
-        XSSFWorkbook xssfWorkbook = new XSSFWorkbook(new File("C:\\solution\\testfile\\testFile.xlsx"));
+        XSSFWorkbook xssfWorkbook = new XSSFWorkbook(new File("C:\\solution\\testfile\\test_1.xlsx"));
 
         // OPCPackge  파일을 i/o 컨테이너를 생성한다고 함.
         OPCPackage opcPackage = xssfWorkbook.getPackage();
@@ -114,6 +112,10 @@ public class XSSFReaderTest {
         SXSSFCreateTest.createXlsx(excelSheetReaderHandlerBean);
 
     }
+
+
+
+
 
 
     public class SheetListHandlerReader implements XSSFCustomSheetXMLHandler.SheetContentsHandler{
@@ -349,6 +351,69 @@ public class XSSFReaderTest {
         public void setXssfCellStyleList(List<XSSFCellStyle> xssfCellStyleList) {
             this.xssfCellStyleList = xssfCellStyleList;
         }
+    }
+
+    @Test
+    public void test() throws Exception {
+
+
+        XSSFRow row;
+        XSSFRow new_row;
+        XSSFSheet sheet;
+        XSSFCell cell;
+        XSSFCell new_cell;
+        XSSFCellStyle cellStyle;
+        XSSFDataFormat dataFormat;
+        XSSFColor color;
+
+        XSSFWorkbook xssfWorkbook = new XSSFWorkbook(new FileInputStream("C:\\solution\\testfile\\test_1.xlsx"));
+        XSSFWorkbook workbook = new XSSFWorkbook();
+        XSSFSheet new_sheet = (XSSFSheet) workbook.createSheet();
+        for(int i = 0; i < xssfWorkbook.getNumberOfSheets(); i++ )
+        {
+            sheet = xssfWorkbook.getSheetAt(i);
+            for(int j =0; j<sheet.getLastRowNum(); j++)
+            {
+                row = (XSSFRow) sheet.getRow(j);
+                new_row = new_sheet.createRow(j);
+                for(int k = 0; k<row.getLastCellNum(); k++)
+                {
+                    cell = row.getCell(k);
+                    new_cell = new_row.createCell(k);
+                    cellStyle = workbook.createCellStyle();
+                    dataFormat = workbook.createDataFormat();
+                    cellStyle.setDataFormat(dataFormat.getFormat(cell.getCellStyle().getDataFormatString()));
+                    color = cell.getCellStyle().getFillBackgroundColorColor();
+                    cellStyle.setFillForegroundColor(color);
+                    new_cell.setCellStyle(cellStyle);
+                    System.out.println(cell.getCellStyle().getFillForegroundColor()+"#");
+                    switch (cell.getCellType()) {
+                        case 0:
+                            new_cell.setCellValue(cell.getNumericCellValue());
+                            break;
+                        case 1:
+                            new_cell.setCellValue(cell.getStringCellValue());
+                            break;
+                        case 2:
+                            new_cell.setCellValue(cell.getNumericCellValue());
+                            break;
+                        case 3:
+                            new_cell.setCellValue(cell.getStringCellValue());
+                            break;
+                        case 4:
+                            new_cell.setCellValue(cell.getBooleanCellValue());
+                            break;
+                        case 5:
+                            new_cell.setCellValue(cell.getErrorCellString());
+                            break;
+                        default:
+                            new_cell.setCellValue(cell.getStringCellValue());
+                            break;
+                    }
+                }
+            }
+        }
+        workbook.write(new FileOutputStream("C:\\solution\\testfile\\test_2.xlsx"));
     }
 
 
